@@ -277,6 +277,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "TestimonialFlow",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            offers: [
+              { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Free" },
+              { "@type": "Offer", price: "9", priceCurrency: "USD", name: "Pro" },
+              { "@type": "Offer", price: "29", priceCurrency: "USD", name: "Business" },
+            ],
+            description:
+              "Collect customer testimonials and embed beautiful widgets on your website. Set up in 2 minutes.",
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "How does TestimonialFlow work?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Create a collection form, share the link with customers, and embed the widget on your site with a single line of code. Setup takes under 2 minutes.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Is TestimonialFlow free?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. The free plan includes up to 10 testimonials, 1 collection form, and a basic widget. No credit card required.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How is TestimonialFlow different from Testimonial.to or Senja?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "TestimonialFlow focuses on simplicity and speed. Setup in 2 minutes vs 10+. Pro plan at $9/mo vs $29-50/mo for competitors. No feature bloat — just what you need.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
       {/* Footer */}
       <footer className="w-full py-8 text-center text-sm text-gray-400 space-y-2">
         <p>
