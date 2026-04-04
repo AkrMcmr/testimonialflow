@@ -278,8 +278,16 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full py-8 text-center text-sm text-gray-400">
-        &copy; 2026 TestimonialFlow. All rights reserved.
+      <footer className="w-full py-8 text-center text-sm text-gray-400 space-y-2">
+        <p>
+          Compare:{" "}
+          <a href="/compare/testimonial-to" className="hover:text-gray-600 underline">vs Testimonial.to</a>
+          {" | "}
+          <a href="/compare/senja" className="hover:text-gray-600 underline">vs Senja</a>
+          {" | "}
+          <a href="/compare/famewall" className="hover:text-gray-600 underline">vs Famewall</a>
+        </p>
+        <p>&copy; 2026 TestimonialFlow. All rights reserved.</p>
       </footer>
     </main>
   );

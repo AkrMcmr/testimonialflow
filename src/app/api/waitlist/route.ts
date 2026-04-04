@@ -1,5 +1,52 @@
 import { NextResponse } from "next/server";
-import { put, list } from "@vercel/blob";
+
+const GIST_ID = process.env.WAITLIST_GIST_ID;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
+async function readGist(): Promise<string[]> {
+  if (!GIST_ID || !GITHUB_TOKEN) return [];
+  const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+    headers: {
+      Authorization: `token ${GITHUB_TOKEN}`,
+      Accept: "application/vnd.github.v3+json",
+    },
+    cache: "no-store",
+  });
+  if (!res.ok) return [];
+  const gist = await res.json();
+  const content = gist.files?.["waitlist.json"]?.content;
+  if (!content) return [];
+  try {
+    const data = JSON.parse(content);
+    return data.emails || [];
+  } catch {
+    return [];
+  }
+}
+
+async function writeGist(emails: string[]): Promise<boolean> {
+  if (!GIST_ID || !GITHUB_TOKEN) return false;
+  const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `token ${GITHUB_TOKEN}`,
+      Accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      files: {
+        "waitlist.json": {
+          content: JSON.stringify(
+            { emails, updated_at: new Date().toISOString() },
+            null,
+            2
+          ),
+        },
+      },
+    }),
+  });
+  return res.ok;
+}
 
 export async function POST(request: Request) {
   try {
@@ -10,39 +57,27 @@ export async function POST(request: Request) {
     }
 
     const sanitized = email.trim().toLowerCase();
+    console.log(
+      `[waitlist] New signup: ${sanitized} at ${new Date().toISOString()}`
+    );
 
-    // Log to Vercel Function Logs (always works, even without Blob store)
-    console.log(`[waitlist] New signup: ${sanitized} at ${new Date().toISOString()}`);
+    const emails = await readGist();
 
-    // Try to store in Vercel Blob (graceful fallback if not configured)
-    try {
-      // Read existing list
-      let emails: string[] = [];
-      try {
-        const blobs = await list({ prefix: "waitlist/" });
-        if (blobs.blobs.length > 0) {
-          const res = await fetch(blobs.blobs[0].url);
-          emails = await res.json();
-        }
-      } catch {
-        // No existing blob, start fresh
-      }
-
-      if (emails.includes(sanitized)) {
-        return NextResponse.json({ message: "Already on the list" });
-      }
-
-      emails.push(sanitized);
-      await put("waitlist/emails.json", JSON.stringify(emails), {
-        access: "public",
-        addRandomSuffix: false,
-      });
-    } catch (e) {
-      // Blob not configured — that's ok, we have console.log
-      console.log(`[waitlist] Blob storage not available, email logged only: ${sanitized}`);
+    if (emails.includes(sanitized)) {
+      return NextResponse.json({ message: "Already on the list" });
     }
 
-    return NextResponse.json({ message: "Added to waitlist" });
+    emails.push(sanitized);
+    const saved = await writeGist(emails);
+
+    if (!saved) {
+      console.log(`[waitlist] Gist save failed for: ${sanitized}`);
+    }
+
+    return NextResponse.json({
+      message: "Added to waitlist",
+      count: emails.length,
+    });
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },
@@ -52,15 +87,6 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  try {
-    const blobs = await list({ prefix: "waitlist/" });
-    if (blobs.blobs.length > 0) {
-      const res = await fetch(blobs.blobs[0].url);
-      const emails: string[] = await res.json();
-      return NextResponse.json({ count: emails.length, emails });
-    }
-  } catch {
-    // Blob not available
-  }
-  return NextResponse.json({ count: 0, emails: [] });
+  const emails = await readGist();
+  return NextResponse.json({ count: emails.length });
 }
