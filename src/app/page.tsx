@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 const DEMO_TESTIMONIALS = [
   {
     name: "Sarah Chen",
@@ -65,83 +63,14 @@ function TestimonialCard({
   );
 }
 
-function EmailForm({ variant = "default" }: { variant?: "default" | "hero" | "footer" }) {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (res.ok) {
-        setStatus("success");
-        setEmail("");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  if (status === "success") {
-    return (
-      <div className="bg-green-50 border border-green-200 rounded-lg px-6 py-4 text-green-800 text-sm">
-        You&apos;re on the list! We&apos;ll notify you when TestimonialFlow
-        launches. Early access spots are limited &mdash; you&apos;re in!
-      </div>
-    );
-  }
-
-  const isHero = variant === "hero";
-
-  return (
-    <div className="w-full max-w-md">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row gap-3 w-full"
-      >
-        <input
-          type="email"
-          required
-          placeholder="you@company.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={`flex-1 px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${isHero ? "border-gray-300 shadow-sm" : "border-gray-300"}`}
-        />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className={`px-6 py-3 text-white text-sm font-semibold rounded-lg transition-all disabled:opacity-50 cursor-pointer ${isHero ? "bg-violet-600 hover:bg-violet-700 shadow-lg hover:shadow-xl" : "bg-violet-600 hover:bg-violet-700"}`}
-        >
-          {status === "loading" ? "..." : "Get Early Access"}
-        </button>
-      </form>
-      {status === "error" && (
-        <p className="text-red-500 text-xs mt-2">
-          Something went wrong. Try again.
-        </p>
-      )}
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <main className="flex flex-col items-center">
       {/* Hero */}
       <section className="w-full max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium rounded-full mb-6">
-          <span className="inline-block w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-          Early Access &mdash; First 50 signups get Pro free for 3 months
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-200 text-green-800 text-xs font-medium rounded-full mb-6">
+          <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          Live Now &mdash; Free plan available, start in 2 minutes
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
           Collect testimonials.
@@ -285,14 +214,17 @@ export default function Home() {
             Ready to let your customers sell for you?
           </h2>
           <p className="text-violet-200 mb-6">
-            Join the waitlist and be the first to try TestimonialFlow.
+            Start collecting testimonials in under 2 minutes. Free forever for up to 10 testimonials.
           </p>
-          <p className="text-violet-100 text-sm font-medium mb-8">
-            First 50 signups get Pro plan free for 3 months ($27 value).
+          <a
+            href="/login"
+            className="inline-block px-8 py-3 bg-white text-violet-700 font-semibold rounded-lg hover:bg-violet-50 transition-all shadow-lg"
+          >
+            Get Started Free
+          </a>
+          <p className="text-violet-200 text-sm mt-4">
+            No credit card required.
           </p>
-          <div className="flex justify-center">
-            <EmailForm variant="footer" />
-          </div>
         </div>
       </section>
 
