@@ -292,6 +292,8 @@ export default function Home() {
         <p>
           <a href="/tools/testimonial-request-email-generator" className="hover:text-gray-600 underline">Free Email Generator</a>
           {" | "}
+          <a href="/testimonial-examples" className="hover:text-gray-600 underline">Testimonial Examples</a>
+          {" | "}
           <a href="/best-testimonial-tools" className="hover:text-gray-600 underline">Best Testimonial Tools</a>
         </p>
         <p>
