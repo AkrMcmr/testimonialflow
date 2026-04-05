@@ -55,8 +55,21 @@ export async function GET(req: NextRequest) {
     }
 
     filtered.sort((a, b) => b.created_at.localeCompare(a.created_at));
-    return NextResponse.json({ testimonials: filtered });
+    return NextResponse.json({ testimonials: filtered }, {
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
+  });
 }
