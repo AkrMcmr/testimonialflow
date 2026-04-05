@@ -155,8 +155,19 @@ export default function Home() {
           best ones and display them on your site with a beautiful embed widget.
           No coding required.
         </p>
-        <div className="mt-8 flex justify-center">
-          <EmailForm variant="hero" />
+        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+          <a
+            href="/login"
+            className="px-8 py-3 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
+          >
+            Get Started Free
+          </a>
+          <a
+            href="#how-it-works"
+            className="px-8 py-3 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-all"
+          >
+            See How It Works
+          </a>
         </div>
         <p className="mt-3 text-xs text-gray-400">
           Free plan available. No credit card required. Set up in under 2 minutes.
@@ -176,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="w-full bg-gray-50 py-20">
+      <section id="how-it-works" className="w-full bg-gray-50 py-20">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-12">
             How It Works
