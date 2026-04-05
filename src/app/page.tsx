@@ -92,10 +92,10 @@ export default function Home() {
             Get Started Free
           </a>
           <a
-            href="#how-it-works"
+            href="/wall/demo-saas"
             className="px-8 py-3 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-all"
           >
-            See How It Works
+            See Live Demo &rarr;
           </a>
         </div>
         <p className="mt-3 text-xs text-gray-400">
@@ -106,7 +106,10 @@ export default function Home() {
       {/* Demo Widget */}
       <section className="w-full max-w-5xl mx-auto px-6 pb-20">
         <p className="text-center text-sm text-gray-500 mb-6">
-          Here&apos;s what your testimonial widget could look like:
+          Here&apos;s what your testimonial widget could look like.{" "}
+          <a href="/wall/demo-saas" className="text-violet-600 hover:underline font-medium">
+            See full Wall of Love &rarr;
+          </a>
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {DEMO_TESTIMONIALS.map((t) => (
