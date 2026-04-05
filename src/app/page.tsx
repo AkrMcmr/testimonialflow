@@ -135,8 +135,8 @@ export default function Home() {
               },
               {
                 step: "3",
-                title: "Embed the widget",
-                desc: "Copy a single line of code. Paste it on your website. Beautiful testimonials appear instantly.",
+                title: "Embed & share",
+                desc: "Embed a widget on your site with one line of code, or share your public Wall of Love page.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center">

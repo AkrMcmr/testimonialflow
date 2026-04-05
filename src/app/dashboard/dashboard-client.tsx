@@ -213,6 +213,17 @@ export default function DashboardClient({
                   {baseUrl}/collect/{project.slug}
                 </a>
               </p>
+              <p className="text-sm text-gray-500 mt-1">
+                Wall of Love:{" "}
+                <a
+                  href={`${baseUrl}/wall/${project.slug}`}
+                  target="_blank"
+                  className="text-violet-600 underline"
+                >
+                  {baseUrl}/wall/{project.slug}
+                </a>
+                <span className="ml-2 text-xs text-gray-400">— share this page to show off your testimonials</span>
+              </p>
             </div>
             <span className="text-sm text-gray-400">
               {project.testimonials.length} testimonial{project.testimonials.length !== 1 ? "s" : ""}
