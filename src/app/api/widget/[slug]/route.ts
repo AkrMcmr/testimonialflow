@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { readDb } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -8,17 +8,15 @@ export async function GET(
   const { slug } = await params;
 
   try {
-    const result = await db.execute({
-      sql: `SELECT t.name, t.role, t.text, t.rating
-            FROM testimonials t
-            JOIN projects p ON t.project_id = p.id
-            WHERE p.slug = ? AND t.approved = 1
-            ORDER BY t.created_at DESC
-            LIMIT 20`,
-      args: [slug],
-    });
-
-    const testimonials = result.rows;
+    const db = await readDb();
+    const project = db.projects.find(p => p.slug === slug);
+    const testimonials = project
+      ? db.testimonials
+          .filter(t => t.project_id === project.id && t.approved === 1)
+          .sort((a, b) => b.created_at.localeCompare(a.created_at))
+          .slice(0, 20)
+          .map(({ name, role, text, rating }) => ({ name, role, text, rating }))
+      : [];
 
     const js = `(function(){
   var d=document,c=d.getElementById("tf-widget-${slug}");

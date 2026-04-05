@@ -1,14 +1,14 @@
-import { initDb } from "@/lib/db";
+import { readDb } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  const secret = process.env.INIT_SECRET;
-  if (!secret) {
-    return NextResponse.json({ error: "No INIT_SECRET configured" }, { status: 500 });
-  }
   try {
-    await initDb();
-    return NextResponse.json({ ok: true });
+    const db = await readDb();
+    return NextResponse.json({
+      ok: true,
+      projects: db.projects.length,
+      testimonials: db.testimonials.length,
+    });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }

@@ -1,10 +1,8 @@
-import { initDb } from "@/lib/db";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    await initDb();
     const { email } = await req.json();
     if (!email) {
       return NextResponse.json({ error: "email required" }, { status: 400 });
@@ -15,7 +13,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: 60 * 60 * 24 * 30,
       path: "/",
     });
 

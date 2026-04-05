@@ -1,14 +1,10 @@
-import { db, initDb } from "@/lib/db";
+import { readDb, writeDb } from "@/lib/db";
 import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 
-// POST: Create a new project
 export async function POST(req: NextRequest) {
   try {
-    await initDb();
-    const body = await req.json();
-    const { name, owner_email } = body;
-
+    const { name, owner_email } = await req.json();
     if (!name || !owner_email) {
       return NextResponse.json({ error: "name and owner_email required" }, { status: 400 });
     }
@@ -19,11 +15,11 @@ export async function POST(req: NextRequest) {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-|-$/g, "")
       .slice(0, 40) + "-" + nanoid(4);
+    const created_at = new Date().toISOString();
 
-    await db.execute({
-      sql: "INSERT INTO projects (id, name, slug, owner_email) VALUES (?, ?, ?, ?)",
-      args: [id, name, slug, owner_email],
-    });
+    const db = await readDb();
+    db.projects.push({ id, name, slug, owner_email, created_at });
+    await writeDb(db);
 
     return NextResponse.json({ id, slug, collect_url: `/collect/${slug}` });
   } catch (e) {
@@ -31,7 +27,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET: List projects (for dashboard)
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email");
   if (!email) {
@@ -39,11 +34,11 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const result = await db.execute({
-      sql: "SELECT id, name, slug, created_at FROM projects WHERE owner_email = ? ORDER BY created_at DESC",
-      args: [email],
-    });
-    return NextResponse.json({ projects: result.rows });
+    const db = await readDb();
+    const projects = db.projects
+      .filter(p => p.owner_email === email)
+      .sort((a, b) => b.created_at.localeCompare(a.created_at));
+    return NextResponse.json({ projects });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }

@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { readDb } from "@/lib/db";
 import DashboardClient from "./dashboard-client";
 
 export default async function DashboardPage() {
@@ -11,39 +11,18 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const projects = await db.execute({
-    sql: "SELECT id, name, slug, created_at FROM projects WHERE owner_email = ? ORDER BY created_at DESC",
-    args: [email],
-  });
+  const db = await readDb();
 
-  const projectList = projects.rows as unknown as Array<{
-    id: string;
-    name: string;
-    slug: string;
-    created_at: string;
-  }>;
+  const userProjects = db.projects
+    .filter(p => p.owner_email === email)
+    .sort((a, b) => b.created_at.localeCompare(a.created_at));
 
-  // Fetch testimonials for each project
-  const projectsWithTestimonials = await Promise.all(
-    projectList.map(async (project) => {
-      const testimonials = await db.execute({
-        sql: "SELECT id, name, role, text, rating, approved, created_at FROM testimonials WHERE project_id = ? ORDER BY created_at DESC",
-        args: [project.id],
-      });
-      return {
-        ...project,
-        testimonials: testimonials.rows as unknown as Array<{
-          id: string;
-          name: string;
-          role: string;
-          text: string;
-          rating: number;
-          approved: number;
-          created_at: string;
-        }>,
-      };
-    })
-  );
+  const projectsWithTestimonials = userProjects.map(project => ({
+    ...project,
+    testimonials: db.testimonials
+      .filter(t => t.project_id === project.id)
+      .sort((a, b) => b.created_at.localeCompare(a.created_at)),
+  }));
 
   return (
     <main className="min-h-screen bg-gray-50">

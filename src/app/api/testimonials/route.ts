@@ -1,23 +1,29 @@
-import { db } from "@/lib/db";
+import { readDb, writeDb } from "@/lib/db";
 import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 
-// POST: Submit a new testimonial (public)
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { project_id, name, role, text, rating } = body;
-
+    const { project_id, name, role, text, rating } = await req.json();
     if (!project_id || !name || !text) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     const id = nanoid(12);
-    await db.execute({
-      sql: `INSERT INTO testimonials (id, project_id, name, role, text, rating)
-            VALUES (?, ?, ?, ?, ?, ?)`,
-      args: [id, project_id, name, role || "", text, rating || 5],
+    const created_at = new Date().toISOString();
+
+    const db = await readDb();
+    db.testimonials.push({
+      id,
+      project_id,
+      name,
+      role: role || "",
+      text,
+      rating: rating || 5,
+      approved: 0,
+      created_at,
     });
+    await writeDb(db);
 
     return NextResponse.json({ id });
   } catch (e) {
@@ -25,36 +31,31 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET: Get testimonials for a project (for widget / dashboard)
 export async function GET(req: NextRequest) {
   const slug = req.nextUrl.searchParams.get("slug");
   const projectId = req.nextUrl.searchParams.get("project_id");
   const approvedOnly = req.nextUrl.searchParams.get("approved") !== "false";
 
   try {
-    let result;
+    const db = await readDb();
+
+    let filtered;
     if (slug) {
-      result = await db.execute({
-        sql: `SELECT t.id, t.name, t.role, t.text, t.rating, t.approved, t.created_at
-              FROM testimonials t
-              JOIN projects p ON t.project_id = p.id
-              WHERE p.slug = ? ${approvedOnly ? "AND t.approved = 1" : ""}
-              ORDER BY t.created_at DESC`,
-        args: [slug],
-      });
+      const project = db.projects.find(p => p.slug === slug);
+      if (!project) return NextResponse.json({ testimonials: [] });
+      filtered = db.testimonials.filter(
+        t => t.project_id === project.id && (!approvedOnly || t.approved === 1)
+      );
     } else if (projectId) {
-      result = await db.execute({
-        sql: `SELECT id, name, role, text, rating, approved, created_at
-              FROM testimonials
-              WHERE project_id = ? ${approvedOnly ? "AND approved = 1" : ""}
-              ORDER BY created_at DESC`,
-        args: [projectId],
-      });
+      filtered = db.testimonials.filter(
+        t => t.project_id === projectId && (!approvedOnly || t.approved === 1)
+      );
     } else {
       return NextResponse.json({ error: "slug or project_id required" }, { status: 400 });
     }
 
-    return NextResponse.json({ testimonials: result.rows });
+    filtered.sort((a, b) => b.created_at.localeCompare(a.created_at));
+    return NextResponse.json({ testimonials: filtered });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });
   }
