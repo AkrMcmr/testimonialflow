@@ -287,6 +287,11 @@ export default function Home() {
       {/* Footer */}
       <footer className="w-full py-8 text-center text-sm text-gray-400 space-y-2">
         <p>
+          <a href="/tools/testimonial-request-email-generator" className="hover:text-gray-600 underline">Free Email Generator</a>
+          {" | "}
+          <a href="/best-testimonial-tools" className="hover:text-gray-600 underline">Best Testimonial Tools</a>
+        </p>
+        <p>
           Compare:{" "}
           <a href="/compare/testimonial-to" className="hover:text-gray-600 underline">vs Testimonial.to</a>
           {" | "}
