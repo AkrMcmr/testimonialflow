@@ -2,36 +2,38 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "TestimonialFlow vs Senja — Simpler & Cheaper Alternative (2026)",
+  title: "TestimonialFlow vs Shapo — Simpler & Cheaper Alternative (2026)",
   description:
-    "Compare TestimonialFlow and Senja. Both offer free plans, but TestimonialFlow is simpler to set up and costs $9/mo vs $29/mo for premium features.",
+    "Compare TestimonialFlow and Shapo. Both offer free plans with 10 testimonials, but TestimonialFlow is 3x cheaper at $9/mo vs $29/mo for premium features.",
   keywords: [
-    "senja alternative",
-    "senja free alternative",
-    "senja vs",
-    "senja pricing",
+    "shapo alternative",
+    "shapo free alternative",
+    "shapo vs",
+    "shapo pricing",
+    "shapo testimonial tool",
     "testimonial collection tool",
     "social proof widget",
   ],
   alternates: {
-    canonical: "https://testimonialflow-kappa.vercel.app/compare/senja",
+    canonical: "https://testimonialflow-kappa.vercel.app/compare/shapo",
   },
 };
 
 const FEATURES = [
-  { feature: "Free plan limit", us: "10 testimonials", them: "15 testimonials" },
+  { feature: "Free plan limit", us: "10 testimonials", them: "10 testimonials" },
   { feature: "Paid plan start", us: "$9/mo", them: "$29/mo" },
-  { feature: "Setup time", us: "~2 minutes", them: "~5 minutes" },
+  { feature: "Setup time", us: "~2 minutes", them: "~10 minutes" },
   { feature: "Embed widget", us: "Yes", them: "Yes" },
   { feature: "Collection pages", us: "Yes", them: "Yes" },
-  { feature: "Import from G2/Capterra", us: "Coming soon", them: "Yes" },
-  { feature: "Custom branding", us: "Pro ($9/mo)", them: "Premium ($29/mo)" },
-  { feature: "Video testimonials", us: "Business plan", them: "Premium plan" },
+  { feature: "Import from 20+ platforms", us: "Coming soon", them: "Yes" },
+  { feature: "Custom branding", us: "Pro ($9/mo)", them: "Pro ($29/mo)" },
+  { feature: "Video testimonials", us: "Business plan", them: "Free plan" },
   { feature: "Wall of Love page", us: "Coming soon", them: "Yes" },
-  { feature: "AI features", us: "AI highlight extraction", them: "AI summaries" },
+  { feature: "Email campaigns", us: "Coming soon", them: "500/mo (Pro)" },
+  { feature: "Widget types", us: "Carousel, Grid", them: "Carousel, Grid, Badge, Toast" },
 ];
 
-export default function CompareSenja() {
+export default function CompareShapo() {
   return (
     <main className="max-w-4xl mx-auto px-6 py-16">
       <Link
@@ -42,12 +44,12 @@ export default function CompareSenja() {
       </Link>
 
       <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
-        TestimonialFlow vs Senja
+        TestimonialFlow vs Shapo
       </h1>
       <p className="mt-4 text-lg text-gray-600">
-        Senja is a solid testimonial tool with a generous free plan. But if
-        you're looking for the simplest possible setup and lower pricing,
-        TestimonialFlow delivers.
+        Shapo is an all-in-one testimonial platform with video support and 20+
+        import sources. But if you just want to collect and embed testimonials
+        quickly, TestimonialFlow does it in 2 minutes at 1/3 the price.
       </p>
 
       <div className="mt-12 overflow-x-auto">
@@ -58,7 +60,7 @@ export default function CompareSenja() {
               <th className="text-left py-3 px-4 text-violet-700 font-bold">
                 TestimonialFlow
               </th>
-              <th className="text-left py-3 pl-4 text-gray-700">Senja</th>
+              <th className="text-left py-3 pl-4 text-gray-700">Shapo</th>
             </tr>
           </thead>
           <tbody>
@@ -77,34 +79,36 @@ export default function CompareSenja() {
 
       <section className="mt-12">
         <h2 className="text-xl font-bold text-gray-900">
-          Why choose TestimonialFlow over Senja?
+          Why choose TestimonialFlow over Shapo?
         </h2>
         <ul className="mt-4 space-y-3 text-gray-700">
           <li>
-            <strong>3x cheaper paid plan:</strong> Remove branding and get
-            unlimited forms at $9/mo instead of $29/mo.
+            <strong>3x cheaper to remove branding:</strong> Get a clean,
+            brandless widget at $9/mo instead of $29/mo.
           </li>
           <li>
-            <strong>Faster than fast:</strong> From signup to embedded widget in
-            under 2 minutes. No learning curve.
+            <strong>Setup in 2 minutes, not 10:</strong> No dashboard to learn,
+            no integrations to configure. Share a link, collect testimonials,
+            embed a widget.
           </li>
           <li>
-            <strong>No feature bloat:</strong> Senja has 50+ features. If you
-            just need to collect testimonials and embed them, TestimonialFlow
-            does that without the complexity.
+            <strong>Built for simplicity:</strong> Shapo has 20+ import sources,
+            email campaigns, and advanced analytics. Great if you need all that
+            &mdash; but most small businesses just want testimonials on their
+            site.
           </li>
         </ul>
       </section>
 
       <section className="mt-12">
         <h2 className="text-xl font-bold text-gray-900">
-          When Senja might be better
+          When Shapo might be better
         </h2>
         <p className="mt-3 text-gray-700">
-          If you need to import reviews from 20+ platforms (G2, Capterra,
-          Trustpilot), create Wall of Love pages, or manage testimonials across
-          multiple brands, Senja's feature depth is unmatched. But most small
-          businesses won't use 80% of those features.
+          If you need video testimonials on the free plan, import reviews from
+          Google/G2/Capterra automatically, or run email campaigns to collect
+          testimonials at scale, Shapo is the more feature-rich option. It's
+          ideal for mid-stage startups who've outgrown basic tools.
         </p>
       </section>
 
@@ -133,12 +137,12 @@ export default function CompareSenja() {
             vs Testimonial.to
           </Link>{" "}
           |{" "}
-          <Link href="/compare/famewall" className="text-violet-500 hover:underline">
-            vs Famewall
+          <Link href="/compare/senja" className="text-violet-500 hover:underline">
+            vs Senja
           </Link>{" "}
           |{" "}
-          <Link href="/compare/shapo" className="text-violet-500 hover:underline">
-            vs Shapo
+          <Link href="/compare/famewall" className="text-violet-500 hover:underline">
+            vs Famewall
           </Link>
         </p>
       </footer>
@@ -149,10 +153,10 @@ export default function CompareSenja() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            name: "TestimonialFlow vs Senja",
+            name: "TestimonialFlow vs Shapo",
             description:
-              "Comparison of TestimonialFlow and Senja testimonial collection tools.",
-            url: "https://testimonialflow-kappa.vercel.app/compare/senja",
+              "Comparison of TestimonialFlow and Shapo testimonial collection tools.",
+            url: "https://testimonialflow-kappa.vercel.app/compare/shapo",
           }),
         }}
       />

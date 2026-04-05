@@ -138,6 +138,10 @@ export default function CompareFamewall() {
           |{" "}
           <Link href="/compare/senja" className="text-violet-500 hover:underline">
             vs Senja
+          </Link>{" "}
+          |{" "}
+          <Link href="/compare/shapo" className="text-violet-500 hover:underline">
+            vs Shapo
           </Link>
         </p>
       </footer>

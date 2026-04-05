@@ -140,6 +140,10 @@ export default function CompareTestimonialTo() {
           |{" "}
           <Link href="/compare/famewall" className="text-violet-500 hover:underline">
             vs Famewall
+          </Link>{" "}
+          |{" "}
+          <Link href="/compare/shapo" className="text-violet-500 hover:underline">
+            vs Shapo
           </Link>
         </p>
       </footer>
