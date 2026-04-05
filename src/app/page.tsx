@@ -295,6 +295,8 @@ export default function Home() {
           <a href="/testimonial-examples" className="hover:text-gray-600 underline">Testimonial Examples</a>
           {" | "}
           <a href="/best-testimonial-tools" className="hover:text-gray-600 underline">Best Testimonial Tools</a>
+          {" | "}
+          <a href="/docs" className="hover:text-gray-600 underline">API Docs</a>
         </p>
         <p>
           Compare:{" "}
