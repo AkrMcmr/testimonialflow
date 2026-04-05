@@ -65,7 +65,7 @@ function TestimonialCard({
   );
 }
 
-function EmailForm() {
+function EmailForm({ variant = "default" }: { variant?: "default" | "hero" | "footer" }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -96,37 +96,41 @@ function EmailForm() {
     return (
       <div className="bg-green-50 border border-green-200 rounded-lg px-6 py-4 text-green-800 text-sm">
         You&apos;re on the list! We&apos;ll notify you when TestimonialFlow
-        launches.
+        launches. Early access spots are limited &mdash; you&apos;re in!
       </div>
     );
   }
 
+  const isHero = variant === "hero";
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
-    >
-      <input
-        type="email"
-        required
-        placeholder="you@company.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-      />
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+    <div className="w-full max-w-md">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col sm:flex-row gap-3 w-full"
       >
-        {status === "loading" ? "..." : "Get Early Access"}
-      </button>
+        <input
+          type="email"
+          required
+          placeholder="you@company.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={`flex-1 px-4 py-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${isHero ? "border-gray-300 shadow-sm" : "border-gray-300"}`}
+        />
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className={`px-6 py-3 text-white text-sm font-semibold rounded-lg transition-all disabled:opacity-50 cursor-pointer ${isHero ? "bg-violet-600 hover:bg-violet-700 shadow-lg hover:shadow-xl" : "bg-violet-600 hover:bg-violet-700"}`}
+        >
+          {status === "loading" ? "..." : "Get Early Access"}
+        </button>
+      </form>
       {status === "error" && (
-        <p className="text-red-500 text-xs self-center">
+        <p className="text-red-500 text-xs mt-2">
           Something went wrong. Try again.
         </p>
       )}
-    </form>
+    </div>
   );
 }
 
@@ -135,8 +139,9 @@ export default function Home() {
     <main className="flex flex-col items-center">
       {/* Hero */}
       <section className="w-full max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
-        <div className="inline-block px-3 py-1 bg-violet-100 text-violet-700 text-xs font-medium rounded-full mb-6">
-          Coming Soon &mdash; Join the Waitlist
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium rounded-full mb-6">
+          <span className="inline-block w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+          Early Access &mdash; First 50 signups get Pro free for 3 months
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
           Collect testimonials.
@@ -151,10 +156,10 @@ export default function Home() {
           No coding required.
         </p>
         <div className="mt-8 flex justify-center">
-          <EmailForm />
+          <EmailForm variant="hero" />
         </div>
         <p className="mt-3 text-xs text-gray-400">
-          Free plan available. No credit card required.
+          Free plan available. No credit card required. Set up in under 2 minutes.
         </p>
       </section>
 
@@ -268,11 +273,14 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-white mb-4">
             Ready to let your customers sell for you?
           </h2>
-          <p className="text-violet-200 mb-8">
+          <p className="text-violet-200 mb-6">
             Join the waitlist and be the first to try TestimonialFlow.
           </p>
+          <p className="text-violet-100 text-sm font-medium mb-8">
+            First 50 signups get Pro plan free for 3 months ($27 value).
+          </p>
           <div className="flex justify-center">
-            <EmailForm />
+            <EmailForm variant="footer" />
           </div>
         </div>
       </section>
